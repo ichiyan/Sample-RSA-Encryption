@@ -59,11 +59,11 @@ def main():
 
     # getting the values for e, d, n, and z through user input
     # if this is uncommented, comment out the next assignment of values
-    #values = generate_keys_by_user_input(p, q)
+    values = generate_keys_by_user_input(p, q)
 
     #getting the values for e, d, n, and z directly
     # if this is uncommented, comment out the previous assignment of values
-    values = generate_keys(p, q)
+    #values = generate_keys(p, q)
 
     e = values.e
     d = values.d
@@ -180,8 +180,6 @@ def is_valid(num):
             for i in range(2, num):
                 if num%i == 0:
                     return False
-                else:
-                    return True
         else:
             return False
     except ValueError:
@@ -191,8 +189,7 @@ def is_valid_e(num, n, z):
     try:
         num = int(num)
         if num < n:
-           if math.gcd(num, z) == 1:
-               return True
+           return True if math.gcd(num, z) == 1 else False
         else:
             return False
     except ValueError:
@@ -202,10 +199,7 @@ def is_valid_d(num, e, z):
     try:
         num = int(num)
         # same as if (e * num - 1) % z == 0:
-        if e * num % z == 1:
-            return True
-        else:
-            return False
+        return True if e * num % z == 1 else False
     except ValueError:
         return False
 
