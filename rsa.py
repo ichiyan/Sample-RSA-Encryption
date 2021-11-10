@@ -3,6 +3,7 @@ import random
 from collections import namedtuple
 
 def main():
+
     #GIVEN VALUES
 
     p = 11
@@ -41,16 +42,17 @@ def main():
 
     p = input("\nEnter a large prime number: ")
     while is_valid(p) == False:
-        print("\nInvalid number.")
+        print("\nInvalid number. Number must be a prime number.")
         p = input("\nEnter a large prime number: ")
 
-    q = input("\nEnter another large prime number: ")
-    while is_valid(q) == False:
-        print("\nInvalid number.")
-        q = input("\nEnter another large prime number: ")
-
     p = int(p)
+
+    q = input("\nEnter another large prime number: ")
     q = int(q)
+    while is_valid(q) == False or p == q:
+        print("\nInvalid number. Number must be ANOTHER prime number.")
+        q = input("\nEnter another large prime number: ")
+        q = int(q)
 
     # getting the values for e, d, n, and z through user input
     # if this is uncommented, comment out the next assignment of values
@@ -64,11 +66,13 @@ def main():
     d = values.d
     n = values.n
     z = values.z
+    public_key = values.public_key
+    private_key = values.private_key
 
     print(f"\nGenerated values:\n\t p = {p}\n\t q = {q}\n\t e = {e}\n\t d = {d}\n\t n = {n}\n\t z = {z}\n")
 
-    print("\nPUBLIC KEY", values.public_key)
-    print("\nPRIVATE KEY", values.private_key)
+    print("\nPUBLIC KEY", public_key)
+    print("\nPRIVATE KEY", private_key)
 
     to_encrypt = input("\nEnter message to be encrypted: ")
     cipher_text = encrypt(e, n, to_encrypt)
@@ -173,6 +177,8 @@ def is_valid(num):
             for i in range(2, num):
                 if num%i == 0:
                     return False
+                else:
+                    return True
         else:
             return False
     except ValueError:
