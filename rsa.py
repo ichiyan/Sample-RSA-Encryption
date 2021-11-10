@@ -91,7 +91,8 @@ def encrypt(e, n, plain_text):
 
     # cipher_string = ''.join([ chr(9608) if ord(char) > 126 or ord(char) < 33 else str(char) for char in cipher_list])
     
-    # this returns readable representaion of non printable characters e.g., null, backspace
+    # this returns readable representaion of printable and non printable characters e.g., null, backspace 
+    #and removes single quotation surrounding result
     cipher_string = ascii(''.join(map(str, cipher_list)))[1:-1]
     cipher = namedtuple('cipher', ['list', 'string'])
 
