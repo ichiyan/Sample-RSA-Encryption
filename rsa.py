@@ -1,8 +1,10 @@
 import math
-
+import random
 from collections import namedtuple
 
 def main():
+    #GIVEN VALUES
+
     p = 11
     q = 13
     e = 7
@@ -10,43 +12,63 @@ def main():
     n = p * q
     z = (p-1) * (q-1)
 
-    #TEST BY USER INPUT
+    public_key = {
+        "n": n,
+        "e": e
+    }
 
-    # p = input("\nEnter a large prime number: ")
+    private_key = {
+        "n": n,
+        "d": d,
+    }
 
-    # while is_valid(p) == False:
-    #     print("\nInvalid number.")
-    #     p = input("\nEnter a large prime number: ")
+    print(f"\nGiven values:\n\t p = {p}\n\t q = {q}\n\t e = {e}\n\t d = {d}\n\t n = {n}\n\t z = {z}\n")
 
-    # q = input("\nEnter another large prime number: ")
+    to_encrypt = input("\nEnter message to be encrypted: ")
+    cipher_text = encrypt(e, n, to_encrypt)
+    print("\nENCRYPTED MESSAGE CHARACTERS: " , cipher_text.list)
+    print("ENCRYPTED MESSAGE: ", cipher_text.string)
 
-    # while is_valid(q) == False:
-    #     print("\nInvalid number.")
-    #     q = input("\nEnter another large prime number: ")
+    to_decrypt = input("\nEnter message to be decrypted: ")
+    plain_text = decrypt(d, n, to_decrypt)
+    print("\nDECRYPTED MESSAGE CHARACTERS: ", plain_text.list)
+    print("DECRYPTED MESSAGE: ", plain_text.string)
 
-    # p = int(p)
-    # q = int(q)
-    # n = p * q
-    # z = (p-1) * (q-1)
 
-    # e = input(f"\nEnter a number < {n} and has no common factor (other than 1) with {z}: ")
+    # GENERATE KEYS THROUGH USER INPUTTED VALUES FOR p AND q
 
-    # while is_valid_e(e, n, z) == False:
-    #     print("\nInvalid number.")
-    #     e = input(f"\nEnter a number < {n} and has no common factor (other than 1) with {z}: ")
+    print("\nGenerate Keys through user inputted values for p and q (uncomment generate_keys_by_user_input in main() if you wish to enter your own values)")
 
-    # e = int(e)
-    
-    # d = input(f"\nEnter a number d that satisfies the condition: {e}(d) - 1 is exactly divisible by {z}: ")
+    p = input("\nEnter a large prime number: ")
+    while is_valid(p) == False:
+        print("\nInvalid number.")
+        p = input("\nEnter a large prime number: ")
 
-    # while is_valid_d(d, e, z) == False:
-    #     print("\nInvalid number.")
-    #     d = input(f"\nEnter a number d that satisfies the condition: {e}(d) - 1 is exactly divisible by {z}: ")
-    
-    # d = int(d)
+    q = input("\nEnter another large prime number: ")
+    while is_valid(q) == False:
+        print("\nInvalid number.")
+        q = input("\nEnter another large prime number: ")
 
-    # public_key = (n, e)
-    # private_key = (n, d)
+    p = int(p)
+    q = int(q)
+
+    # getting the values for e, d, n, and z through user input
+    # if this is uncommented, comment out the next assignment of values
+    #values = generate_keys_by_user_input(p, q)
+
+    #getting the values for e, d, n, and z directly
+    # if this is uncommented, comment out the previous assignment of values
+    values = generate_keys(p, q)
+
+    e = values.e
+    d = values.d
+    n = values.n
+    z = values.z
+
+    print(f"\nGenerated values:\n\t p = {p}\n\t q = {q}\n\t e = {e}\n\t d = {d}\n\t n = {n}\n\t z = {z}\n")
+
+    print("\nPUBLIC KEY", values.public_key)
+    print("\nPRIVATE KEY", values.private_key)
 
     to_encrypt = input("\nEnter message to be encrypted: ")
     cipher_text = encrypt(e, n, to_encrypt)
@@ -84,6 +106,65 @@ def decrypt(d, n, cipher_text):
     
     return plain(plain_text, plain_text_string)
 
+def generate_keys(p, q):
+    n = p * q
+    z = (p-1) * (q-1)
+
+    possible_e_values = [i for i in range(1, z) if is_valid_e(i, n, z)]
+    e = random.choice(possible_e_values)
+    possible_d_values = [j for j in range(1, 1000) if is_valid_d(j, e, z)]
+    d = random.choice(possible_d_values)
+    
+    public_key = {
+        "n": n,
+        "e": e
+    }
+
+    private_key = {
+        "n": n,
+        "d": d,
+    }
+
+    values = namedtuple('values', ['n', 'z', 'e', 'd', 'public_key', 'private_key'])
+
+    return values(n, z, e, d, public_key, private_key)
+    
+
+def generate_keys_by_user_input(p, q):
+    n = p * q
+    z = (p-1) * (q-1)
+
+    e = input(f"\nEnter a number < {n} and has no common factor (other than 1) with {z}: ")
+
+    while is_valid_e(e, n, z) == False:
+        print("\nInvalid number.")
+        e = input(f"\nEnter a number < {n} and has no common factor (other than 1) with {z}: ")
+
+    e = int(e)
+    
+    d = input(f"\nEnter a number d that satisfies the condition: {e}(d) - 1 is exactly divisible by {z}: ")
+
+    while is_valid_d(d, e, z) == False:
+        print("\nInvalid number.")
+        d = input(f"\nEnter a number d that satisfies the condition: {e}(d) - 1 is exactly divisible by {z}: ")
+    
+    d = int(d)
+
+    public_key = {
+        "n": n,
+        "e": e
+    }
+
+    private_key = {
+        "n": n,
+        "d": d,
+    }
+
+    values = namedtuple('values', ['n', 'z', 'e', 'd', 'public_key', 'private_key'])
+
+    return values(n, z, e, d, public_key, private_key)
+
+
 def is_valid(num):
     try:
         num = int(num)
@@ -110,12 +191,13 @@ def is_valid_e(num, n, z):
 def is_valid_d(num, e, z):
     try:
         num = int(num)
-        if (e * num - 1) % z == 0:
+        # same as if (e * num - 1) % z == 0:
+        if e * num % z == 1:
             return True
         else:
             return False
     except ValueError:
         return False
-        
+
 
 main()
