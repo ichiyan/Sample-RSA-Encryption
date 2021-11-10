@@ -59,11 +59,11 @@ def main():
 
     # getting the values for e, d, n, and z through user input
     # if this is uncommented, comment out the next assignment of values
-    values = generate_keys_by_user_input(p, q)
+    #values = generate_keys_by_user_input(p, q)
 
     #getting the values for e, d, n, and z directly
     # if this is uncommented, comment out the previous assignment of values
-    #values = generate_keys(p, q)
+    values = generate_keys(p, q)
 
     e = values.e
     d = values.d
