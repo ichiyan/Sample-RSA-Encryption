@@ -23,7 +23,10 @@ def main():
         "d": d,
     }
 
-    print(f"\nGiven values:\n\t p = {p}\n\t q = {q}\n\t e = {e}\n\t d = {d}\n\t n = {n}\n\t z = {z}\n")
+    print(f"\nGiven values:\n\t p = {p}\n\t q = {q}\n\t e = {e}\n\t d = {d}\n\t n = {n}\n\t z = {z}")
+
+    print("\n\t PUBLIC KEY", public_key)
+    print("\n\t PRIVATE KEY", private_key)
 
     to_encrypt = input("\nEnter message to be encrypted: ")
     cipher_text = encrypt(e, n, to_encrypt)
